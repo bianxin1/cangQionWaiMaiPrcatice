@@ -11,3 +11,8 @@ sky:
     accessKeyId: LTAI5tM2CzNt1afYafAakzD2
     accessKeySecret: 2mFPmKhDgiuGHniiCKtAYu3oKlbAJ7
     bucketName: hmleadnews819
+  redis:
+    host: localhost
+    port: 6379
+    password: 123456
+    database: 10
