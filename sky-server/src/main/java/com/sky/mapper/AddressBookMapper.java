@@ -21,7 +21,7 @@ public interface AddressBookMapper {
      * @param addressBook
      */
     @Select("select * from address_book where user_id=#{userId} and is_default = 1")
-    void getDefaltAddress(AddressBook addressBook);
+    AddressBook getDefaltAddress(AddressBook addressBook);
     @Update("update address_book set is_default = #{isDefault} and user_id =#{userId}")
     void updateIsDefaultByUserId(AddressBook addressBook);
 

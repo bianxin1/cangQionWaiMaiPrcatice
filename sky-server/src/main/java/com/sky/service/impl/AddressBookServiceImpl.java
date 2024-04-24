@@ -41,7 +41,7 @@ public class AddressBookServiceImpl implements AddressBookService {
     public AddressBook findByUserId() {
         AddressBook addressBook= new AddressBook();
         addressBook.setUserId(BaseContext.getCurrentId());
-        addressBookMapper.getDefaltAddress(addressBook);
+        addressBook= addressBookMapper.getDefaltAddress(addressBook);
         return addressBook;
     }
 
