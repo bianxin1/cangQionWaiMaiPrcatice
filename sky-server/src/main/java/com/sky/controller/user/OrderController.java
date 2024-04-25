@@ -1,7 +1,10 @@
 package com.sky.controller.user;
 
+import com.github.pagehelper.Page;
+import com.sky.dto.OrdersPageQueryDTO;
 import com.sky.dto.OrdersPaymentDTO;
 import com.sky.dto.OrdersSubmitDTO;
+import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.OredeService;
 import com.sky.vo.OrderPaymentVO;
@@ -12,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.websocket.server.PathParam;
 
 @RestController
 @RequestMapping("/user/order")
@@ -49,5 +53,17 @@ public class OrderController {
         oredeService.paySuccess(ordersPaymentDTO.getOrderNumber());
 
         return Result.success(orderPaymentVO);
+    }
+
+    /**
+     * 分页查询
+     * @param  page,  pageSize,  status)
+     * @return
+     */
+    @GetMapping("/historyOrders")
+    @ApiOperation("历史订单查询")
+    public Result<PageResult> pageQuery(int page, int pageSize, Integer status){
+        PageResult pageResult = oredeService.pageQuery(page,pageSize,status);
+        return Result.success(pageResult);
     }
 }
