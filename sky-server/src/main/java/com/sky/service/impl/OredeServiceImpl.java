@@ -176,4 +176,60 @@ public class OredeServiceImpl implements OredeService {
 
         return new PageResult(pages.getTotal(),list);
     }
+
+    /**
+     * 查询订单详情
+     * @param id
+     * @return
+     */
+    @Override
+    public OrderVO details(Long id) {
+        List<OrderDetail> list = orderDetailMapper.getById(id);
+        OrderVO orderVO = new OrderVO();
+        orderVO.setOrderDetailList(list);
+        Orders orders = orderMapper.getById(id);
+        BeanUtils.copyProperties(orders,orderVO);
+        return orderVO;
+    }
+
+    /**
+     * 取消订单
+     * @param id
+     */
+    @Override
+    public void cancel(Long id) {
+        Orders orders = orderMapper.getById(id);
+        if (orders == null) {
+            throw new OrderBusinessException(MessageConstant.ORDER_NOT_FOUND);
+        }
+        if (orders.getStatus() > 2) {
+            throw new OrderBusinessException(MessageConstant.ORDER_STATUS_ERROR);
+        }
+        int status = orders.getStatus();
+        if (status == 2|| status==1){
+            orders.setStatus(Orders.CANCELLED);
+            orders.setCancelReason("用户取消");
+            orders.setCancelTime(LocalDateTime.now());
+            orderMapper.update(orders);
+        }
+    }
+
+    /**
+     * 再来一单
+     * @param id
+     */
+    @Override
+    public void repetition(Long id) {
+        List<OrderDetail> orderDetails = orderDetailMapper.getById(id);
+        Long userId = BaseContext.getCurrentId();
+        List<ShoppingCart> shoppingCartList =new ArrayList<>();
+        for (OrderDetail orderDetail : orderDetails) {
+            ShoppingCart shoppingCart =new ShoppingCart();
+            BeanUtils.copyProperties(orderDetail,shoppingCart);
+            shoppingCart.setUserId(userId);
+            shoppingCart.setCreateTime(LocalDateTime.now());
+            shoppingCartList.add(shoppingCart);
+        }
+        shoppingCartMapper.insertBatch(shoppingCartList);
+    }
 }
