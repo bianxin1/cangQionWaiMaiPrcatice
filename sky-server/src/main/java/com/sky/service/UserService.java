@@ -11,4 +11,10 @@ public interface UserService {
      * @return
      */
     User wxLogin(UserLoginDTO userLoginDTO);
+
+    /**
+     * 用户催单
+     * @param id
+     */
+    void reminder(Long id);
 }

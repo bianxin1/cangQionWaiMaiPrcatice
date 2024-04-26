@@ -7,6 +7,7 @@ import com.sky.dto.OrdersSubmitDTO;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.OredeService;
+import com.sky.service.UserService;
 import com.sky.vo.OrderPaymentVO;
 import com.sky.vo.OrderSubmitVO;
 import com.sky.vo.OrderVO;
@@ -25,6 +26,8 @@ import javax.websocket.server.PathParam;
 public class OrderController {
     @Resource
     private OredeService oredeService;
+    @Resource
+    private UserService userService;
 
     /**
      * 提交订单
@@ -79,7 +82,12 @@ public class OrderController {
         OrderVO orderVO = oredeService.details(id);
         return Result.success(orderVO);
     }
-
+    @GetMapping("/reminder/{id}")
+    @ApiOperation("用户催单")
+    public Result reminder(@PathVariable Long id){
+        userService.reminder(id);
+        return Result.success();
+    }
     /**
      * 取消订单
      * @param id
