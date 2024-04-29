@@ -30,4 +30,11 @@ public interface UserMapper {
      * @return
      */
     Integer sumByMap(Map map);
+
+    /**
+     * 当日新增用户
+     * @param map
+     * @return
+     */
+    Integer countByMap(Map map);
 }
